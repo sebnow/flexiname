@@ -1,8 +1,8 @@
 /*
- *  main.h
- * 
+ *  queue.h
+ *
  *  Copyright (c) 2007  Sebastian Nowicki
- * 
+ *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
@@ -15,16 +15,29 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, 
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
  *  USA.
  */
 
-#include "../lib/queue.h"
+#ifndef QUEUE_H
+#define QUEUE_H
 
-#ifndef VERSION_STR
-#define VERSION_STR "git"
+typedef struct node_t node_t;
+struct node_t {
+    char *data;
+    node_t *next;
+    node_t *prev;
+};
+
+typedef struct {
+    node_t *front;
+    node_t *back;
+} queue_t;
+
+queue_t *queue_create(void);
+void queue_destroy(queue_t *queue);
+int queue_push_front(queue_t *queue, char *data);
+char *queue_pop_back(queue_t *queue);
+int queue_empty(const queue_t *queue);
+
 #endif
-#define PROGNAME "FlexiName"
-
-static int parse_args(int argc, char *argv[]);
-static void usage();

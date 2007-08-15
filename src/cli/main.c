@@ -32,21 +32,18 @@ typedef struct {
 
 config_t config;
 
-static int parse_args(int argc, char *argv[]);
-static void usage(char *prog_name);
-
 int main(int argc, char *argv[])
 {
     if(parse_args(argc, argv) > 0) {
-        usage(argv[0]);
+        usage(PROGNAME);
         return 1;
     }
 
     if(config.help) {
-        usage(argv[0]);
+        usage(PROGNAME);
         return 0;
     } else if(config.version) {
-        printf("%s %f\n", argv[0], VERSION);
+        printf("%s %s\n", PROGNAME, VERSION_STR);
     }
 
     return 0;
@@ -79,10 +76,10 @@ static int parse_args(int argc, char *argv[])
     return 0;
 }
 
-static void usage(char *prog_name)
+static void usage()
 {
-    printf("Usage:  %s [OPTION]... SOURCE DEST\n", prog_name);
-    printf("   or:  %s [OPTION]... SOURCE... DIRECTORY\n", prog_name);
-    printf("   or:  %s [OPTION]... -t DIRECTORY SOURCE...\n", prog_name);
+    printf("Usage:  %s [OPTION]... SOURCE DEST\n", PROGNAME);
+    printf("   or:  %s [OPTION]... SOURCE... DIRECTORY\n", PROGNAME);
+    printf("   or:  %s [OPTION]... -t DIRECTORY SOURCE...\n", PROGNAME);
     printf("Rename SOURCE to DEST, or move SOURCE(s) to DIRECTORY.\n");
 }
