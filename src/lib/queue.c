@@ -19,6 +19,11 @@
  *  USA.
  */
 
+/**
+ * @file    queue.c
+ * @brief   Defines functions for a doubly-linked queue.
+ */
+
 #include "queue.h"
 
 #include <stdio.h>
@@ -100,7 +105,6 @@ int queue_push_front(queue_t *queue, void *data)
     }
 
     new_node->data = data;
-
     new_node->next = queue->front;
 
     /* If the front is empty just add the node, otherwise link it in */
@@ -147,50 +151,6 @@ void *queue_pop_back(queue_t *queue)
     return data;
 }
 
-#if 0
-int queue_push_back(queue_t *queue, char *data)
-{
-    node_t new_node;
-
-    new_node.data = *data;
-
-    /* Set the last node if queue is empty */
-    if(queue->front == 0) {
-        queue->front = &new_node;
-        new_node.next = 0;
-    }
-
-    /* If the back is empty just add the node, otherwise link it in */
-    if(queue->back == 0) {
-        queue->back = &new_node;
-    } else {
-        new_node->next = queue->back;
-        queue->back = &new_node;
-    }
-}
-
-int queue_pop_front(queue_t *queue, char *data)
-{
-    node_t *old_node;
-
-    /* Check that we have something to pop */
-    if(queue->front == 0)
-    {
-        return 0;
-    }
-
-    /* Get the data and remove the node */
-    old_node = queue->front;
-    data = old_node->data;
-    queue->front = old_node->next;
-
-    old_node->next = 0;
-    old_node = 0;
-
-    return 1;
-}
-#endif
-
 /**
  * @brief   Check if the queue is empty
  *
@@ -200,5 +160,6 @@ int queue_pop_front(queue_t *queue, char *data)
  */
 int queue_is_empty(const queue_t *queue)
 {
-    return queue->front == 0 && queue->back == 0;
+    return queue == NULL || (queue->front == NULL && queue->back == NULL);
 }
+

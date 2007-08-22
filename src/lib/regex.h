@@ -19,6 +19,11 @@
  *  USA.
  */
 
+/**
+ * @file    regex.h
+ * @brief   Implements regular-expression related functions to ease the pain.
+ */
+
 #ifndef REGEX_H
 #define REGEX_H
 

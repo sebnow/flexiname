@@ -19,20 +19,37 @@
  *  USA.
  */
 
+/**
+ * @file    queue.h
+ * @brief   Defines functions for a doubly-linked queue.
+ */
+
 #ifndef QUEUE_H
 #define QUEUE_H
 
+/**
+ * @struct  node_t
+ * @brief   A node within a queue.
+ *
+ * node_t->next and node_t->prev point to the next and previous nodes in the
+ * queue, respectively.
+ */
 typedef struct node_t node_t;
 struct node_t {
-    void *data;
-    node_t *next;
-    node_t *prev;
+    void *data;     /**< Data to be stored */
+    node_t *next;   /**< Pointer to the next node_t */
+    node_t *prev;   /**< Pointer to previous node_t */
 };
 
+/**
+ * @struct  queue_t
+ * @brief   Metadata about queue
+ */
 typedef struct {
-    node_t *front;
-    node_t *back;
+    node_t *front;  /**< Points to the node_t at the front/head of the queue */
+    node_t *back;   /**< Points to the node_t at the back/tail of the queue */
 } queue_t;
+
 
 queue_t *queue_create(void);
 void queue_destroy(queue_t *queue);
