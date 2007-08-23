@@ -2,15 +2,15 @@ PROJECT := "flexiname"
 VERSION := "git"
 DEBUG := 1
 
-CFLAGS := -O2 -pipe -DVERSION=$(VERSION)
+CFLAGS := -ansi -O2 -pipe -DVERSION=$(VERSION)
 ifeq ($(DEBUG),1)
-	CFLAGS := $(CFLAGS) -g -DDEBUG=1
+	CFLAGS := $(CFLAGS) -g -DDEBUG=1 -Wall
 endif
 
 CLI_EXE := flexiname
 
 CLI_OBJ := src/cli/main.o
-LIB_OBJ := src/lib/queue.o
+LIB_OBJ := src/lib/queue.o src/lib/regex.o
 
 all: options $(CLI_EXE)
 
@@ -24,7 +24,7 @@ $(CLI_EXE): $(CLI_OBJ) $(LIB_OBJ)
 	$(LINK.c) -o $@ $(CLI_OBJ) $(LIB_OBJ)
 
 install:
-	install -m 755 $(CLI_EXE) $(DESTDIR)$(PREFIX)/bin/$(CLI_EXE)
+	install -Dm 755 $(CLI_EXE) $(DESTDIR)$(PREFIX)/bin/$(CLI_EXE)
 
 uninstall:
 	$(RM) $(DESTDIR)$(PREFIX)/bin/$(CLI_EXE)
@@ -34,6 +34,12 @@ clean:
 	@-$(RM) $(CLI_OBJ)
 	@-$(RM) $(LIB_OBJ)
 	@-$(RM) $(PROJECT)-$(VERSION).tar.gz
+
+doc:
+	doxygen
+
+clean-doc:
+	@-$(RM) -r doc
 
 dist: clean
 	@mkdir -p $(PROJECT)-$(VERSION)
