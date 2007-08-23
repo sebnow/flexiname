@@ -19,12 +19,15 @@
  *  USA.
  */
 
+#ifndef MAIN_H
+#define MAIN_H
+
 #include "../lib/queue.h"
 
 #ifndef VERSION_STR
 #define VERSION_STR "git"
 #endif
-#define PROGNAME "FlexiName"
 
-static int parse_args(int argc, char *argv[]);
-static void usage();
+#define PROGNAME "flexiname"
+
+#endif
