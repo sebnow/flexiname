@@ -21,7 +21,9 @@ options:
 	@echo
 
 $(CLI_EXE): $(CLI_OBJ) $(LIB_OBJ)
-	$(LINK.c) -o $@ $(CLI_OBJ) $(LIB_OBJ)
+	@echo "CC  -o $@"
+	@$(LINK.c) -o $@ $(CLI_OBJ) $(LIB_OBJ)
+	@echo
 
 install:
 	install -Dm 755 $(CLI_EXE) $(DESTDIR)$(PREFIX)/bin/$(CLI_EXE)
@@ -38,14 +40,26 @@ clean:
 doc:
 	doxygen
 
-clean-doc:
+doc-clean:
 	@-$(RM) -r doc
 
 dist: clean
 	@mkdir -p $(PROJECT)-$(VERSION)
 	@cp -r AUTHORS  COPYING  ChangeLog  INSTALL  Makefile	README	src \
 			$(PROJECT)-$(VERSION)
-	@tar -cvzf $(PROJECT)-$(VERSION).tar.gz $(PROJECT)-$(VERSION)
+	@echo "Compressing archive"
+	@tar -cvzf $(PROJECT)-$(VERSION).tar.gz $(PROJECT)-$(VERSION) > /dev/null
 	@rm -rf $(PROJECT)-$(VERSION)
+
+dist-clean:
+	@rm -rf $(PROJECT)-$(VERSION)
+
+%.o: %.c
+	@echo "CC  $<"
+	@$(COMPILE.c) -o $*.o $<
+
+%.d: %.c
+	@echo "DEP $<"
+	@$(CC) -o $*.d -MM -E $< > /dev/null
 
 .PHONY: all options clean dist install uninstall
