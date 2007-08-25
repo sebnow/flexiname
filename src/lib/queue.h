@@ -55,6 +55,6 @@ queue_t *queue_create(void);
 void queue_destroy(queue_t *queue);
 int queue_push_front(queue_t *queue, void *data);
 void *queue_pop_back(queue_t *queue);
-int queue_empty(const queue_t *queue);
+int queue_is_empty(const queue_t *queue);
 
 #endif

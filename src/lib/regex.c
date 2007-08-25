@@ -28,6 +28,7 @@
 #include <malloc.h>
 #include <stdio.h>
 #include <ctype.h>
+#include <string.h>
 
 /**
  * @brief   Perform a regular expression search and replace
@@ -118,4 +119,28 @@ char *regex_replace(regex_t *regexp, const char *subj, const char *replace, int 
     *p_newstr = '\0';
 
     return newstr;
+}
+
+queue_t *regex_parse_replace(queue_t *files, char *regex, char *replace, int cflags)
+{
+    filename_pair_t *file;
+    regex_t regexp;
+    queue_t *files_new = queue_create();
+
+    if(!files_new) {
+        return NULL;
+    }
+
+    if(regcomp(&regexp, regex, cflags) != 0) {
+        return NULL;
+    }
+
+    while((file = queue_pop_back(files)) != NULL) {
+        file->new = regex_replace(&regexp, file->old, replace, cflags, NULL);
+        queue_push_front(files_new, file);
+    }
+
+    queue_destroy(files);
+
+    return files_new;
 }

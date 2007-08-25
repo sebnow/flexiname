@@ -29,6 +29,14 @@
 
 #include <regex.h>
 
+#include "queue.h"
+
+typedef struct {
+    char *old;
+    char *new;
+} filename_pair_t;
+
 char *regex_replace(regex_t *regexp, const char *subj, const char *replace, int eflags, int *err);
+queue_t *regex_parse_replace(queue_t *files, char *regex, char *replace, int cflags);
 
 #endif
