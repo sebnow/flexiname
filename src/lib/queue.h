@@ -24,7 +24,7 @@
 
 typedef struct node_t node_t;
 struct node_t {
-    char *data;
+    void *data;
     node_t *next;
     node_t *prev;
 };
@@ -36,8 +36,8 @@ typedef struct {
 
 queue_t *queue_create(void);
 void queue_destroy(queue_t *queue);
-int queue_push_front(queue_t *queue, char *data);
-char *queue_pop_back(queue_t *queue);
+int queue_push_front(queue_t *queue, void *data);
+void *queue_pop_back(queue_t *queue);
 int queue_empty(const queue_t *queue);
 
 #endif

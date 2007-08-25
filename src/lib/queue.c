@@ -37,6 +37,7 @@ static node_t *node_create(void)
 {
     node_t *new_node = (node_t *) malloc (sizeof (node_t));
     if(new_node != NULL) {
+        new_node->data = NULL;
         new_node->next = NULL;
         new_node->prev = NULL;
     }
@@ -86,7 +87,7 @@ void queue_destroy(queue_t *queue)
  *
  * @return  0 on success, 1 if memory is exhausted
  */
-int queue_push_front(queue_t *queue, char *data)
+int queue_push_front(queue_t *queue, void *data)
 {
     node_t *new_node = node_create();
 
@@ -118,9 +119,9 @@ int queue_push_front(queue_t *queue, char *data)
  *
  * @return  Data
  */
-char *queue_pop_back(queue_t *queue)
+void *queue_pop_back(queue_t *queue)
 {
-    char *data = NULL;
+    void *data = NULL;
     node_t *old_node = queue->back;
 
     /* Check that we have something to pop */
