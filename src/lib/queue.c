@@ -72,6 +72,9 @@ void queue_destroy(queue_t *queue)
 
     while(current != NULL) {
         next = current->next;
+        if(current->data) {
+            free(current->data);
+        }
         free(current);
         current = next;
     }
