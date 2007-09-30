@@ -1,0 +1,7 @@
+To install simply execute the following commands:
+
+    make
+    make PREFIX=/usr/local install
+
+Replacing /usr/local with whatever prefix you want to use. DESTDIR is also
+available.
