@@ -121,6 +121,21 @@ char *regex_replace(regex_t *regexp, const char *subj, const char *replace, int 
     return newstr;
 }
 
+/**
+ * @brief   Searches for pattern regex and replaces with replace in files
+ *
+ * The string regex is compiled into a regex_t regular expression and used
+ * to search all nodes in files. Given a match the string will be replaced
+ * with replaces.
+ *
+ * @param   files   Queue which will be traversed
+ * @param   regex   Regular expressionto be compiled and used
+ * @param   replace String to be replaced with
+ * @param   cflags  Compiler flags for regcomp()
+ *
+ * @see     regcomp()
+ * @see     regex_replace()
+ */
 queue_t *regex_parse_replace(queue_t *files, char *regex, char *replace, int cflags)
 {
     filename_pair_t *file;
