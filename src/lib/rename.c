@@ -1,5 +1,5 @@
 /*
- *  regex.h
+ *  rename.c
  *
  *  Copyright (c) 2007  Sebastian Nowicki
  *
@@ -18,21 +18,23 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
  *  USA.
  */
+#include "rename.h"
 
-/**
- * @file    regex.h
- * @brief   Implements regular-expression related functions to ease the pain.
- */
+int rename_files(queue_t *file_queue, unsigned short overwrite)
+{
+    filename_pair_t *filename;
+    struct stat fstat;
 
-#ifndef REGEX_H
-#define REGEX_H
+    /* Traverse the file queue and rename each file */
+    while((filename = queue_pop_back(file_queue))) {
+        /* Only overwrite if the file does not exist or we want to overwrite */
+        if(stat(filename->new, &fstat) != 0 || overwrite) {
+            if(rename(filename->old, filename->new) != 0) {
+                fprintf(stderr, "WARNING: Could not rename '%s' to '%s'\n",
+                        filename->old, filename->new);
+            }
+        }
+    }
 
-#include <regex.h>
-
-#include "queue.h"
-#include "files.h"
-
-char *regex_replace(regex_t *regexp, const char *subj, const char *replace, int eflags, int *err);
-queue_t *regex_parse_replace(queue_t *files, char *regex, char *replace, int cflags);
-
-#endif
+    return 0;
+}

@@ -1,5 +1,5 @@
 /*
- *  regex.h
+ *  files.h
  *
  *  Copyright (c) 2007  Sebastian Nowicki
  *
@@ -19,20 +19,12 @@
  *  USA.
  */
 
-/**
- * @file    regex.h
- * @brief   Implements regular-expression related functions to ease the pain.
- */
+#ifndef FILES_H
+#define FILES_H
 
-#ifndef REGEX_H
-#define REGEX_H
-
-#include <regex.h>
-
-#include "queue.h"
-#include "files.h"
-
-char *regex_replace(regex_t *regexp, const char *subj, const char *replace, int eflags, int *err);
-queue_t *regex_parse_replace(queue_t *files, char *regex, char *replace, int cflags);
+typedef struct {
+    char *old;
+    char *new;
+} filename_pair_t;
 
 #endif

@@ -10,7 +10,7 @@ endif
 CLI_EXE := flexiname
 
 CLI_OBJ := src/cli/main.o
-LIB_OBJ := src/lib/queue.o src/lib/regex.o
+LIB_OBJ := src/lib/queue.o src/lib/regex.o src/lib/rename.o
 
 all: options $(CLI_EXE)
 
@@ -45,6 +45,7 @@ doc-clean:
 
 dist: clean
 	@mkdir -p $(PROJECT)-$(VERSION)
+	@git log | git shortlog > ChangeLog
 	@cp -r AUTHORS  COPYING  ChangeLog  INSTALL  Makefile	README	src \
 			$(PROJECT)-$(VERSION)
 	@echo "Compressing archive"

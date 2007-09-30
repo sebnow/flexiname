@@ -22,13 +22,13 @@
 #include <getopt.h>
 #include <stdio.h>
 #include <regex.h>
-#include <sys/stat.h>
 #include <string.h>
 #include <malloc.h>
 
 #include "main.h"
 #include "../lib/regex.h"
 #include "../lib/queue.h"
+#include "../lib/rename.h"
 
 typedef struct {
     unsigned short help:1;
@@ -50,25 +50,6 @@ static int move(const char *src, const char *dst);
 static void usage();
 static void version();
 static int expr_split(const char *str, expression_t *expr);
-
-int rename_files(queue_t *file_queue, unsigned short overwrite)
-{
-    filename_pair_t *filename;
-    struct stat fstat;
-
-    /* Traverse the file queue and rename each file */
-    while((filename = queue_pop_back(file_queue))) {
-        /* Only overwrite if the file does not exist or we want to overwrite */
-        if(stat(filename->new, &fstat) != 0 || overwrite) {
-            if(rename(filename->old, filename->new) != 0) {
-                fprintf(stderr, "WARNING: Could not rename '%s' to '%s'\n",
-                        filename->old, filename->new);
-            }
-        }
-    }
-
-    return 0;
-}
 
 int main(int argc, char *argv[])
 {
@@ -206,38 +187,6 @@ static void version()
     printf("There is NO WARRANTY, to the extent permitted by law.\n");
 }
 
-static int move(const char *src, const char *dst)
-{
-    struct stat fstat;
-    char *buf;
-
-    /* Check if file exists */
-    if(stat(dst, &fstat) == 0) {
-        /* Check if dst is a directory */
-        if(S_ISDIR(fstat.st_mode)) {
-            buf = malloc((strlen(src) + strlen(dst) + 1) * sizeof(char));
-            if(buf == NULL) {
-                return 1;
-            }
-
-            strcpy(buf, dst);
-            strcat(buf, "/");
-            strcat(buf, src);
-            rename(src, buf);
-            free(buf);
-        } else {
-            /* TODO: File already exists, for now just return an error */
-            return 2;
-        }
-    } else {
-        if(rename(src, dst) != 0) {
-            return 1;
-        }
-    }
-
-    return 0;
-}
-
 static int expr_split(const char *str, expression_t *expr)
 {
     size_t colon_len;
@@ -275,6 +224,38 @@ static int expr_split(const char *str, expression_t *expr)
         return 1;
     }
     strncpy(expr->replace, colon, colon_len);
+
+    return 0;
+}
+
+static int move(const char *src, const char *dst)
+{
+    struct stat fstat;
+    char *buf;
+
+    /* Check if file exists */
+    if(stat(dst, &fstat) == 0) {
+        /* Check if dst is a directory */
+        if(S_ISDIR(fstat.st_mode)) {
+            buf = malloc((strlen(src) + strlen(dst) + 1) * sizeof(char));
+            if(buf == NULL) {
+                return 1;
+            }
+
+            strcpy(buf, dst);
+            strcat(buf, "/");
+            strcat(buf, src);
+            rename(src, buf);
+            free(buf);
+        } else {
+            /* TODO: File already exists, for now just return an error */
+            return 2;
+        }
+    } else {
+        if(rename(src, dst) != 0) {
+            return 1;
+        }
+    }
 
     return 0;
 }
