@@ -18,8 +18,17 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
  *  USA.
  */
+
 #include "rename.h"
 
+/**
+ * @brief   Rename all files in queue file_queue
+ *
+ * @param   file_queue  A queue of filename_pair_t structs
+ * @param   overwrite   Whether to force renaming or not
+ *
+ * @return  0 on success
+ */
 int rename_files(queue_t *file_queue, unsigned short overwrite)
 {
     filename_pair_t *filename;

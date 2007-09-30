@@ -30,17 +30,23 @@
 #include "../lib/queue.h"
 #include "../lib/rename.h"
 
+/**
+ * @brief   Contains configuration options
+ */
 typedef struct {
-    unsigned short help:1;
-    unsigned short version:1;
-    unsigned short verbose:1;
-    unsigned short overwrite:1;
-    unsigned short regex_flags;
+    unsigned short help:1;      /**< @brief Whether to show usage */
+    unsigned short version:1;   /**< @brief Whether to show version */
+    unsigned short verbose:1;   /**< @brief Whether to be verbose */
+    unsigned short overwrite:1; /**< @brief Whether to force renaming */
+    unsigned short regex_flags; /**< @brief Flags for regcomp */
 } config_t;
 
+/**
+ * @brief   Regex-replace pair, like in s/regex/replace/
+ */
 typedef struct {
-    char *regex;
-    char *replace;
+    char *regex;                /**< @brief Plaintext regular expression */
+    char *replace;              /**< @brief Text to replace with */
 } expression_t;
 
 config_t config;
@@ -119,6 +125,15 @@ int main(int argc, char *argv[])
     return 0;
 }
 
+/**
+ * @brief   Parse arguments passed from the command line
+ *
+ * @param   argc        Amount of arguments
+ * @param   argv        Arguments passed from the command line
+ * @param   expr_queue  Queue to put expressions into
+ *
+ * @return  0 on success, 1 if OoM
+ */
 static int parse_args(int argc, char *argv[], queue_t *expr_queue)
 {
     int opt;
@@ -162,6 +177,9 @@ static int parse_args(int argc, char *argv[], queue_t *expr_queue)
     return 0;
 }
 
+/**
+ * @brief   Print usage
+ */
 static void usage()
 {
     printf("Usage:  %s [OPTION]... SOURCE DEST\n", PROGNAME);
@@ -177,6 +195,9 @@ static void usage()
     printf(" -f, --force            Force renaming (overwrite).\n");
 }
 
+/**
+ * @brief   Print version
+ */
 static void version()
 {
     printf("%s-%s\n", PROGNAME, VERSION_STR);
@@ -187,6 +208,14 @@ static void version()
     printf("There is NO WARRANTY, to the extent permitted by law.\n");
 }
 
+/**
+ * @brief   Split an expression to regex and replace string
+ *
+ * @param   str     Expression to be split
+ * @param   expr    Container for the split expression
+ *
+ * @return  0 on success, 1 on OoM
+ */
 static int expr_split(const char *str, expression_t *expr)
 {
     size_t colon_len;
@@ -228,6 +257,14 @@ static int expr_split(const char *str, expression_t *expr)
     return 0;
 }
 
+/**
+ * @brief   Rename a file or move into a directory
+ *
+ * @param   src     Filename of file to be moved/renamed
+ * @param   dst     New filename or directory to move in to
+ *
+ * @return  0 on success, 1 if OoM, 2 if file already exists
+ */
 static int move(const char *src, const char *dst)
 {
     struct stat fstat;

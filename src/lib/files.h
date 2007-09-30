@@ -19,12 +19,20 @@
  *  USA.
  */
 
+/**
+ * @file    files.h
+ * @brief   Defines functions and structs dealing with files
+ */
+
 #ifndef FILES_H
 #define FILES_H
 
+/**
+ * @brief   Old filename and new filename pair
+ */
 typedef struct {
-    char *old;
-    char *new;
+    char *old;      /**< @brief Old (current) filename */
+    char *new;      /**< @brief New filename */
 } filename_pair_t;
 
 #endif

@@ -28,13 +28,16 @@
 #define QUEUE_H
 
 /**
- * @struct  node_t
- * @brief   A node within a queue.
+ * @brief   A node within a queue
+ */
+typedef struct node_t node_t;
+
+/**
+ * @brief   A node within a queue
  *
  * node_t->next and node_t->prev point to the next and previous nodes in the
  * queue, respectively.
  */
-typedef struct node_t node_t;
 struct node_t {
     void *data;     /**< Data to be stored */
     node_t *next;   /**< Pointer to the next node_t */
@@ -43,7 +46,7 @@ struct node_t {
 
 /**
  * @struct  queue_t
- * @brief   Metadata about queue
+ * @brief   Doubly-linked queue
  */
 typedef struct {
     node_t *front;  /**< Points to the node_t at the front/head of the queue */
