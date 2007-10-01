@@ -63,4 +63,4 @@ dist-clean:
 	@echo "DEP $<"
 	@$(CC) -o $*.d -MM -E $< > /dev/null
 
-.PHONY: all options clean dist install uninstall
+.PHONY: all options clean dist install uninstall doc-clean
